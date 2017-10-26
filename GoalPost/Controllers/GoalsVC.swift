@@ -62,7 +62,7 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             print("returned UITableViewCell")
         }
         let goal = goals[indexPath.row]
-        cell.configureCell(description: goal.goalDescription!, type: GoalType(rawValue: goal.goalType!)!, goalProgessAmt: Int(goal.goalProgress))
+        cell.configureCell(description: goal.goalDescription!, type: goal.goalType!, goalProgessAmt: goalProgress)
         print("cell returned")
         return cell
     }
