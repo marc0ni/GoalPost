@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CreateGoalVC: UIViewController, UITextViewDelegate {
     @IBOutlet weak var goalTextView: UITextView!
