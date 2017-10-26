@@ -1,6 +1,6 @@
 # GoalPost -- Core Data and UI Extensions
 
-A goal-setting app coded under instruction from the Udemy online course, <i>iOS 11 & Swift 4: From Beginning to Paid Professional</i>. The main focus of this project is Core Data. But it also includes three UI extensions which trigger Navigation Controller transitioning by pressing keyboard-bound buttons. These extensions are:
+A goal-setting app coded under instruction from the Udemy online course, <i>iOS 11 & Swift 4: From Beginning to Paid Professional</i>. The main focus of this project is Core Data. But it also includes three UI extensions which trigger transitioning (similar to Navigation Controller animation) by pressing keyboard-bound buttons. These extensions are:
 
 <ul>
   <li>UIViewControllerExt -- includes these functions:</li>
