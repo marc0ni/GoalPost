@@ -26,8 +26,10 @@ class GoalsVC: UIViewController {
             if complete {
                 if goals.count >= 1 {
                     tableView.isHidden = false
+                    print("goals.count = \(goals.count)")
                 } else {
                     tableView.isHidden = true
+                    print("no goals yet")
                 }
             }
         }
@@ -36,23 +38,32 @@ class GoalsVC: UIViewController {
     
     @IBAction func addGoalBtnWasPressed(_ sender: Any) {
         guard let createGoalVC = storyboard?.instantiateViewController(withIdentifier: "CreateGoalVC") else { return }
+        print("goals.count = \(goals.count)")
         presentDetail(createGoalVC)
     }
 }
 
 extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return goals.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        print("number of Rows = \(goals.count)")
+        return goals.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as? GoalCell else { return UITableViewCell() }
+        if (tableView.dequeueReusableCell(withIdentifier: "goalCell") != nil) {
+            print("dequeued goalCell")
+        } else {
+            print("returned UITableViewCell")
+        }
         let goal = goals[indexPath.row]
         cell.configureCell(description: goal.goalDescription!, type: GoalType(rawValue: goal.goalType!)!, goalProgessAmt: Int(goal.goalProgress))
+        print("cell returned")
         return cell
     }
 }
