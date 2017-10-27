@@ -56,11 +56,6 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as? GoalCell else { return UITableViewCell() }
-        if tableView.dequeueReusableCell(withIdentifier: "goalCell") != nil {
-            print("goal cell dequeued")
-        } else {
-            print("returned UITableViewCell")
-        }
         let goal = goals[indexPath.row]
         cell.configureCell(goal: goal)
         return cell
