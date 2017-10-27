@@ -167,7 +167,7 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="gno-hx-a3D" secondAttribute="trailing" constant="8" id="APA-u3-zyt"/>
                                                 <constraint firstItem="YpO-Br-OtN" firstAttribute="top" secondItem="fw7-fb-2yp" secondAttribute="topMargin" id="Nqg-Fd-q55"/>
                                                 <constraint firstItem="gno-hx-a3D" firstAttribute="top" secondItem="fw7-fb-2yp" secondAttribute="topMargin" id="hAz-8N-7JU"/>
-                                                <constraint firstItem="gno-hx-a3D" firstAttribute="leading" secondItem="YpO-Br-OtN" secondAttribute="trailing" constant="10" id="pKP-el-E9A"/>
+                                                <constraint firstItem="gno-hx-a3D" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YpO-Br-OtN" secondAttribute="trailing" constant="10" id="pKP-el-E9A"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
