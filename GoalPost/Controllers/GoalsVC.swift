@@ -18,6 +18,8 @@ class GoalsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +40,6 @@ class GoalsVC: UIViewController {
     
     @IBAction func addGoalBtnWasPressed(_ sender: Any) {
         guard let createGoalVC = storyboard?.instantiateViewController(withIdentifier: "CreateGoalVC") else { return }
-        print("goals.count = \(goals.count)")
         presentDetail(createGoalVC)
     }
 }
@@ -49,21 +50,19 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("number of Rows = \(goals.count)")
         return goals.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as? GoalCell else { return UITableViewCell() }
-        if (tableView.dequeueReusableCell(withIdentifier: "goalCell") != nil) {
-            print("dequeued goalCell")
+        if tableView.dequeueReusableCell(withIdentifier: "goalCell") != nil {
+            print("goal cell dequeued")
         } else {
             print("returned UITableViewCell")
         }
         let goal = goals[indexPath.row]
-        cell.configureCell(description: goal.goalDescription!, type: goal.goalType!, goalProgessAmt: goalProgress)
-        print("cell returned")
+        cell.configureCell(goal: goal)
         return cell
     }
 }
@@ -72,10 +71,10 @@ extension GoalsVC {
     func fetch(completion:(_ complete: Bool) -> ()) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Goal")
+        let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
         
         do {
-            goals = try managedContext.fetch(fetchRequest) as! [Goal]
+            goals = try managedContext.fetch(fetchRequest) 
             print("Successfully fetched data.")
             completion(true)
         } catch {
