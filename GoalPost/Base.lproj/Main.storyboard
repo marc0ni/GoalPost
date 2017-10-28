@@ -260,6 +260,7 @@
                     <connections>
                         <outlet property="tableView" destination="x8y-Ax-ZFk" id="YsS-fF-oPa"/>
                         <outlet property="undoButton" destination="enQ-yS-MeJ" id="Ngm-5D-4LF"/>
+                        <outlet property="undoStack" destination="31s-tz-wOB" id="4mq-H4-WAK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Anz-Ce-20Y" userLabel="First Responder" sceneMemberID="firstResponder"/>

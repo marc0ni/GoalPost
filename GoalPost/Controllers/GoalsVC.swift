@@ -14,6 +14,7 @@ let appDelegate = UIApplication.shared.delegate as? AppDelegate
 class GoalsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var undoStack: UIStackView!
     
     var goals: [Goal] = []
     
@@ -22,6 +23,7 @@ class GoalsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = false
+        undoStack.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,6 +87,7 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             self.removeGoal(atIndexPath: indexPath)
             self.fetchCoreDataObjects()
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.undoStack.isHidden = false
         }
         let addAction = UITableViewRowAction(style: .normal, title: "ADD 1") { (rowAction, indexPath) in
             self.setProgress(atIndexPath: indexPath)
