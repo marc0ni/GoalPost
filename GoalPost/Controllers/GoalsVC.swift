@@ -13,6 +13,7 @@ let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class GoalsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var undoButton: UIButton!
     
     var goals: [Goal] = []
     
@@ -47,6 +48,11 @@ class GoalsVC: UIViewController {
         guard let createGoalVC = storyboard?.instantiateViewController(withIdentifier: "CreateGoalVC") else { return }
         presentDetail(createGoalVC)
     }
+    
+    @IBAction func undoBtnWasPressed(_ sender: Any) {
+        
+    }
+    
 }
 
 extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
