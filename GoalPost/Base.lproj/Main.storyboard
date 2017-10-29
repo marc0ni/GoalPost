@@ -231,7 +231,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="completionView" destination="tID-fy-rEw" id="gN3-2Q-k77"/>
-                                            <outlet property="goalContentView" destination="fw7-fb-2yp" id="Fzc-IL-ALT"/>
                                             <outlet property="goalDescriptionLbl" destination="LTH-da-3sW" id="WOo-iw-jdj"/>
                                             <outlet property="goalProgressLbl" destination="gno-hx-a3D" id="2Sw-dV-eS2"/>
                                             <outlet property="goalTermLbl" destination="NoD-TB-KpW" id="Yw5-B7-6HN"/>
