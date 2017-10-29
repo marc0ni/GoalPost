@@ -133,6 +133,16 @@ extension GoalsVC {
         }
     }
     
+    func undoRemoveGoal(atIndexPath indexPath: IndexPath) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+
+        undoManager?.registerUndo(withTarget: self, selector: Selector(("removeGoal:")), object:managedContext)
+        if undoManager?.isUndoing == false {
+            undoManager?.setActionName(NSLocalizedString("action.add-item", comment: "Add Item"))
+        }
+        //tableView(_, tableView: UITableView, cellForRowAt: indexPath)
+    }
+    
     func fetch(completion:(_ complete: Bool) -> ()) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         

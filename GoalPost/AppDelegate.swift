@@ -16,7 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        /*var undoManager = window!.undoManager
+        undoManager?.levelsOfUndo = 5
+        var objectsArr = ["object1″, ”object2″]
+        tableview.reloadData()*/
         return true
     }
 
