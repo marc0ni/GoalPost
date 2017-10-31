@@ -13,7 +13,7 @@ let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class GoalsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var undoBtn: UIButton!
     @IBOutlet weak var undoStack: UIStackView!
     
     var goals: [Goal] = []
@@ -51,9 +51,10 @@ class GoalsVC: UIViewController {
         presentDetail(createGoalVC)
     }
     
-    @IBAction func undoBtnWasPressed(_ sender: Any) {
-        
+    @IBAction func undoBtnWasPressed(_ sender: UIButton) {
+        undo(AnyObject.self)
     }
+    
     
 }
 
@@ -123,6 +124,11 @@ extension GoalsVC {
     func removeGoal(atIndexPath indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
+        undoManager?.registerUndo(withTarget: self, selector: Selector(("undoRemoveGoal:")), object:managedContext)
+        if undoManager?.isUndoing == false {
+            undoManager?.setActionName(NSLocalizedString("action.restore-goal", comment: "Restore Goal"))
+        }
+        
         managedContext.delete(goals[indexPath.row])
         
         do {
@@ -133,15 +139,26 @@ extension GoalsVC {
         }
     }
     
-    func undoRemoveGoal(atIndexPath indexPath: IndexPath) {
+    func undo(_ sender: Any?){
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-
-        undoManager?.registerUndo(withTarget: self, selector: Selector(("removeGoal:")), object:managedContext)
-        if undoManager?.isUndoing == false {
-            undoManager?.setActionName(NSLocalizedString("action.add-item", comment: "Add Item"))
-        }
-        //tableView(_, tableView: UITableView, cellForRowAt: indexPath)
+        managedContext.undoManager?.undo()
+        print("Goal has been restored.")
+        self.undoStack.isHidden = true
+        tableView.reloadData()
     }
+    
+    /*func undoRemoveGoal(atIndexPath indexPath: IndexPath){
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        managedContext.undoManager = UndoManager()
+        
+        do {
+            try managedContext.save()
+            print("Successfully restored goal!")
+        } catch {
+            debugPrint("Could not restore: \(error.localizedDescription)")
+        }
+    }*/
     
     func fetch(completion:(_ complete: Bool) -> ()) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
