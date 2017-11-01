@@ -10,13 +10,18 @@ import Foundation
 
 struct UndoHistory<Goal> {
     let initialValue: [Goal]
-    let history:[[Goal]] = []
+    var history:[[Goal]] = []
     
     init(_ initialValue: [Goal]){
         self.initialValue = initialValue
     }
     
     var currentValue: [Goal] {
-        return history.last ?? initialValue
+        get { return history.last ?? initialValue }
+        set { history.append(newValue) }
+    }
+    
+    mutating func undo() {
+        history.popLast()
     }
 }

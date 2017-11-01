@@ -16,7 +16,15 @@ class GoalsVC: UIViewController {
     @IBOutlet weak var undoBtn: UIButton!
     @IBOutlet weak var undoStack: UIStackView!
     
-    var goals: [Goal] = []
+    var goals: [Goal] {
+        get { return history.currentValue }
+        set { history.currentValue = newValue }
+    }
+    var history: UndoHistory<Goal> {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +32,7 @@ class GoalsVC: UIViewController {
         tableView.dataSource = self
         tableView.isHidden = false
         undoStack.isHidden = true
+        self.history = UndoHistory(goals)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +61,7 @@ class GoalsVC: UIViewController {
     }
     
     @IBAction func undoBtnWasPressed(_ sender: UIButton) {
-        undo(AnyObject.self)
+        history.undo()
     }
 }
 
