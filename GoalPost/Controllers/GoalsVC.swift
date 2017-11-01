@@ -54,8 +54,6 @@ class GoalsVC: UIViewController {
     @IBAction func undoBtnWasPressed(_ sender: UIButton) {
         undo(AnyObject.self)
     }
-    
-    
 }
 
 extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
@@ -65,7 +63,6 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return goals.count
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -74,6 +71,13 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
         cell.configureCell(goal: goal)
         return cell
     }
+    
+    /*func restoreCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> GoalCell {
+        guard let cell = UITableViewCell() as? GoalCell else { return UITableViewCell() as! GoalCell }
+        let goal = goals[indexPath.row]
+        cell.configureCell(goal: goal)
+        return cell
+    }*/
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -94,10 +98,19 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             self.setProgress(atIndexPath: indexPath)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-        
+        let undoAction = UITableViewRowAction(style: .normal, title: nil) { (rowAction, indexPath) in
+            if self.undoBtn.isSelected {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as! GoalCell
+                let goal = self.goals[indexPath.row]
+                cell.configureCell(goal: goal)
+                self.setProgress(atIndexPath: indexPath)
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.undoStack.isHidden = true
+            }
+        }
         deleteAction.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         addAction.backgroundColor = #colorLiteral(red: 0.9771530032, green: 0.7062081099, blue: 0.1748393774, alpha: 1)
-        return [deleteAction, addAction]
+        return [deleteAction, addAction, undoAction]
     }
 }
 
@@ -142,23 +155,7 @@ extension GoalsVC {
     func undo(_ sender: Any?){
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         managedContext.undoManager?.undo()
-        print("Goal has been restored.")
-        self.undoStack.isHidden = true
-        tableView.reloadData()
     }
-    
-    /*func undoRemoveGoal(atIndexPath indexPath: IndexPath){
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        
-        managedContext.undoManager = UndoManager()
-        
-        do {
-            try managedContext.save()
-            print("Successfully restored goal!")
-        } catch {
-            debugPrint("Could not restore: \(error.localizedDescription)")
-        }
-    }*/
     
     func fetch(completion:(_ complete: Bool) -> ()) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
