@@ -107,7 +107,7 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             self.setProgress(atIndexPath: indexPath)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-        let undoAction = UITableViewRowAction(style: .normal, title: nil) { (rowAction, indexPath) in
+        /*let undoAction = UITableViewRowAction(style: .normal, title: nil) { (rowAction, indexPath) in
             if self.undoBtn.isSelected {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as! GoalCell
                 let goal = self.goals[indexPath.row]
@@ -116,10 +116,10 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
                 tableView.reloadRows(at: [indexPath], with: .automatic)
                 self.undoStack.isHidden = true
             }
-        }
+        }*/
         deleteAction.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         addAction.backgroundColor = #colorLiteral(red: 0.9771530032, green: 0.7062081099, blue: 0.1748393774, alpha: 1)
-        return [deleteAction, addAction, undoAction]
+        return [deleteAction, addAction]
     }
 }
 
@@ -146,10 +146,10 @@ extension GoalsVC {
     func removeGoal(atIndexPath indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
-        undoManager?.registerUndo(withTarget: self, selector: Selector(("undoRemoveGoal:")), object:managedContext)
+        /*undoManager?.registerUndo(withTarget: self, selector: Selector(("undoRemoveGoal:")), object:managedContext)
         if undoManager?.isUndoing == false {
             undoManager?.setActionName(NSLocalizedString("action.restore-goal", comment: "Restore Goal"))
-        }
+        }*/
         
         managedContext.delete(goals[indexPath.row])
         
@@ -161,10 +161,10 @@ extension GoalsVC {
         }
     }
     
-    func undo(_ sender: Any?){
+    /*func undo(_ sender: Any?){
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         managedContext.undoManager?.undo()
-    }
+    }*/
     
     func fetch(completion:(_ complete: Bool) -> ()) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
