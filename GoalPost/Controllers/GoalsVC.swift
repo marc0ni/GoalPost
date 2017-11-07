@@ -16,7 +16,7 @@ class GoalsVC: UIViewController {
     @IBOutlet weak var undoBtn: UIButton!
     @IBOutlet weak var undoStack: UIStackView!
     
-    var goals: [Goal] {
+    /*var goals: [Goal] {
         get { return history.currentValue }
         set { history.currentValue = newValue }
     }
@@ -24,7 +24,7 @@ class GoalsVC: UIViewController {
         didSet {
             tableView.reloadData()
         }
-    }
+    }*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +61,7 @@ class GoalsVC: UIViewController {
     }
     
     @IBAction func undoBtnWasPressed(_ sender: UIButton) {
-        history.undo()
+        undo((_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell))
     }
 }
 
@@ -80,13 +80,6 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
         cell.configureCell(goal: goal)
         return cell
     }
-    
-    /*func restoreCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> GoalCell {
-        guard let cell = UITableViewCell() as? GoalCell else { return UITableViewCell() as! GoalCell }
-        let goal = goals[indexPath.row]
-        cell.configureCell(goal: goal)
-        return cell
-    }*/
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -107,16 +100,6 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             self.setProgress(atIndexPath: indexPath)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-        /*let undoAction = UITableViewRowAction(style: .normal, title: nil) { (rowAction, indexPath) in
-            if self.undoBtn.isSelected {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as! GoalCell
-                let goal = self.goals[indexPath.row]
-                cell.configureCell(goal: goal)
-                self.setProgress(atIndexPath: indexPath)
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-                self.undoStack.isHidden = true
-            }
-        }*/
         deleteAction.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         addAction.backgroundColor = #colorLiteral(red: 0.9771530032, green: 0.7062081099, blue: 0.1748393774, alpha: 1)
         return [deleteAction, addAction]
@@ -146,11 +129,6 @@ extension GoalsVC {
     func removeGoal(atIndexPath indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
-        /*undoManager?.registerUndo(withTarget: self, selector: Selector(("undoRemoveGoal:")), object:managedContext)
-        if undoManager?.isUndoing == false {
-            undoManager?.setActionName(NSLocalizedString("action.restore-goal", comment: "Restore Goal"))
-        }*/
-        
         managedContext.delete(goals[indexPath.row])
         
         do {
@@ -160,11 +138,6 @@ extension GoalsVC {
             debugPrint("Could not remove: \(error.localizedDescription)")
         }
     }
-    
-    /*func undo(_ sender: Any?){
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        managedContext.undoManager?.undo()
-    }*/
     
     func fetch(completion:(_ complete: Bool) -> ()) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
@@ -179,5 +152,12 @@ extension GoalsVC {
             debugPrint("Could not fetch: \(error.localizedDescription)")
             completion(false)
         }
+    }
+    
+    private func undo(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as? GoalCell else { return UITableViewCell() }
+        let goal = goals[indexPath.row]
+        cell.configureCell(goal: goal)
+        return cell
     }
 }
