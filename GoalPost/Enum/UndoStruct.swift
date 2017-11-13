@@ -21,7 +21,7 @@ struct UndoHistory<Goal> {
         set { history.append(newValue) }
     }
     
-    mutating func undo() {
+    /*mutating func undo() {
         history.popLast()
-    }
+    }*/
 }

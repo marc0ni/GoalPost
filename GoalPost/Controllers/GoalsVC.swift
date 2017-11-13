@@ -9,6 +9,11 @@
 import UIKit
 import CoreData
 
+protocol Undoable {
+    func undo()
+    func redo()
+}
+
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class GoalsVC: UIViewController {
@@ -16,15 +21,7 @@ class GoalsVC: UIViewController {
     @IBOutlet weak var undoBtn: UIButton!
     @IBOutlet weak var undoStack: UIStackView!
     
-    /*var goals: [Goal] {
-        get { return history.currentValue }
-        set { history.currentValue = newValue }
-    }
-    var history: UndoHistory<Goal> {
-        didSet {
-            tableView.reloadData()
-        }
-    }*/
+    var goals: [Goal] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +29,6 @@ class GoalsVC: UIViewController {
         tableView.dataSource = self
         tableView.isHidden = false
         undoStack.isHidden = true
-        self.history = UndoHistory(goals)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +57,7 @@ class GoalsVC: UIViewController {
     }
     
     @IBAction func undoBtnWasPressed(_ sender: UIButton) {
-        undo((_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell))
+        
     }
 }
 
@@ -95,6 +91,7 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             self.fetchCoreDataObjects()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             self.undoStack.isHidden = false
+            self.undoBtn.isEnabled = true
         }
         let addAction = UITableViewRowAction(style: .normal, title: "ADD 1") { (rowAction, indexPath) in
             self.setProgress(atIndexPath: indexPath)
@@ -154,10 +151,18 @@ extension GoalsVC {
         }
     }
     
-    private func undo(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell") as? GoalCell else { return UITableViewCell() }
-        let goal = goals[indexPath.row]
-        cell.configureCell(goal: goal)
-        return cell
+    func restoreGoal(atIndexPath indexPath: IndexPath) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        managedContext.insert(goals[indexPath.row])
+        
+        do {
+            try managedContext.save()
+            print("Successfully restored goal!")
+        } catch {
+            debugPrint("Could not restore: \(error.localizedDescription)")
+        }
+        self.undoBtn.isEnabled = false
+        self.undoStack.isHidden = true
     }
 }

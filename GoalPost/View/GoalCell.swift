@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class GoalCell: UITableViewCell {
     @IBOutlet weak var goalDescriptionLbl: UILabel!
@@ -14,10 +15,20 @@ class GoalCell: UITableViewCell {
     @IBOutlet weak var goalProgressLbl: UILabel!
     @IBOutlet weak var completionView: UIView!
     
+    var goalIndex: Int32?
+    
     func configureCell(goal: Goal) {
         self.goalDescriptionLbl.text = goal.goalDescription
         self.goalTermLbl.text = goal.goalType
         self.goalProgressLbl.text = String(describing: goal.goalProgress)
+        self.goalIndex = goal.index
+        
+        if lastIndex = nil {
+            lastIndex = 0
+        } else {
+            lastIndex = goalIndex
+        }
+        
         
         if goal.goalProgress == goal.goalCompletionValue {
             self.completionView.isHidden = false
