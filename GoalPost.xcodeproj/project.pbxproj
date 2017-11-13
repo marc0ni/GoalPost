@@ -25,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		381D28E91FBA4AF300836667 /* GoalPost 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GoalPost 3.xcdatamodel"; sourceTree = "<group>"; };
+		381D28EA1FBA548700836667 /* GoalPost 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GoalPost 4.xcdatamodel"; sourceTree = "<group>"; };
 		381D33161FAA47FC00640311 /* UndoStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStruct.swift; sourceTree = "<group>"; };
 		384F8F561FA1E24A000EA733 /* GoalPost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalPost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		384F8F591FA1E24A000EA733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -397,9 +399,11 @@
 		384F8F601FA1E24A000EA733 /* GoalPost.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				381D28EA1FBA548700836667 /* GoalPost 4.xcdatamodel */,
+				381D28E91FBA4AF300836667 /* GoalPost 3.xcdatamodel */,
 				384F8F611FA1E24A000EA733 /* GoalPost.xcdatamodel */,
 			);
-			currentVersion = 384F8F611FA1E24A000EA733 /* GoalPost.xcdatamodel */;
+			currentVersion = 381D28EA1FBA548700836667 /* GoalPost 4.xcdatamodel */;
 			path = GoalPost.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

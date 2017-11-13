@@ -16,14 +16,15 @@ class GoalCell: UITableViewCell {
     @IBOutlet weak var completionView: UIView!
     
     var goalIndex: Int32?
+    var lastIndex: Int32?
     
     func configureCell(goal: Goal) {
         self.goalDescriptionLbl.text = goal.goalDescription
         self.goalTermLbl.text = goal.goalType
         self.goalProgressLbl.text = String(describing: goal.goalProgress)
-        self.goalIndex = goal.index
-        
-        if lastIndex = nil {
+        self.goalIndex = goal.goalIndex 
+       
+        if lastIndex == nil {
             lastIndex = 0
         } else {
             lastIndex = goalIndex
