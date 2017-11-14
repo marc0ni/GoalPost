@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class GoalCell: UITableViewCell {
     @IBOutlet weak var goalDescriptionLbl: UILabel!
@@ -30,7 +29,7 @@ class GoalCell: UITableViewCell {
             lastIndex = goalIndex
         }
         
-        if goal.goalProgress == goal.goalCompletionValue {
+        if goal.goalProgress == goal.goalCompletionValue  {
             self.completionView.isHidden = false
         } else {
             self.completionView.isHidden = true

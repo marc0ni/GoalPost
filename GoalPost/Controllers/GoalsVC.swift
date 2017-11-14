@@ -18,6 +18,9 @@ class GoalsVC: UIViewController {
     
     var goals: [Goal] = []
     var deletedGoalIndex: Int32?
+    var delegate: UndoTransferDelegate? = nil
+    var undoStatus: UndoStatus? = .off
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,8 @@ class GoalsVC: UIViewController {
         tableView.isHidden = false
         undoStack.isHidden = true
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -92,6 +97,8 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             tableView.deleteRows(at: [indexPath], with: .automatic)
             self.undoStack.isHidden = false
             self.undoBtn.isEnabled = true
+            debugPrint("Debug Print Message from editActionsForRowAt")
+
         }
         let addAction = UITableViewRowAction(style: .normal, title: "ADD 1") { (rowAction, indexPath) in
             self.setProgress(atIndexPath: indexPath)
@@ -137,6 +144,7 @@ extension GoalsVC {
         do {
             try managedContext.save()
             self.undoStack.isHidden = false
+            debugPrint("Debug Print Message from removeGoal(atIndexPath)")
         } catch {
             debugPrint("Could not remove: \(error.localizedDescription)")
         }

@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		381D33171FAA47FC00640311 /* UndoStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381D33161FAA47FC00640311 /* UndoStruct.swift */; };
+		381B65371FBB798E009A1341 /* UndoTransferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381B65361FBB798E009A1341 /* UndoTransferDelegate.swift */; };
+		381B65391FBB7FC7009A1341 /* UndoStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381B65381FBB7FC7009A1341 /* UndoStatus.swift */; };
+		381B653C1FBB804F009A1341 /* Togglable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381B653B1FBB804F009A1341 /* Togglable.swift */; };
 		384F8F5A1FA1E24A000EA733 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384F8F591FA1E24A000EA733 /* AppDelegate.swift */; };
 		384F8F5F1FA1E24A000EA733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 384F8F5D1FA1E24A000EA733 /* Main.storyboard */; };
 		384F8F621FA1E24A000EA733 /* GoalPost.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 384F8F601FA1E24A000EA733 /* GoalPost.xcdatamodeld */; };
@@ -25,9 +27,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		381B65361FBB798E009A1341 /* UndoTransferDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoTransferDelegate.swift; sourceTree = "<group>"; };
+		381B65381FBB7FC7009A1341 /* UndoStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStatus.swift; sourceTree = "<group>"; };
+		381B653B1FBB804F009A1341 /* Togglable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Togglable.swift; sourceTree = "<group>"; };
 		381D28E91FBA4AF300836667 /* GoalPost 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GoalPost 3.xcdatamodel"; sourceTree = "<group>"; };
 		381D28EA1FBA548700836667 /* GoalPost 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GoalPost 4.xcdatamodel"; sourceTree = "<group>"; };
-		381D33161FAA47FC00640311 /* UndoStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStruct.swift; sourceTree = "<group>"; };
 		384F8F561FA1E24A000EA733 /* GoalPost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalPost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		384F8F591FA1E24A000EA733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		384F8F5E1FA1E24A000EA733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -57,6 +61,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		381B653A1FBB800E009A1341 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				381B65361FBB798E009A1341 /* UndoTransferDelegate.swift */,
+				381B653B1FBB804F009A1341 /* Togglable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		384F8F4D1FA1E249000EA733 = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +89,7 @@
 		384F8F581FA1E24A000EA733 /* GoalPost */ = {
 			isa = PBXGroup;
 			children = (
+				381B653A1FBB800E009A1341 /* Protocols */,
 				384F8F711FA1E322000EA733 /* Enum */,
 				384F8F701FA1E312000EA733 /* Extensions */,
 				384F8F6F1FA1E2FE000EA733 /* View */,
@@ -123,7 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				384F8F761FA1E817000EA733 /* GoalType.swift */,
-				381D33161FAA47FC00640311 /* UndoStruct.swift */,
+				381B65381FBB7FC7009A1341 /* UndoStatus.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -205,11 +219,13 @@
 				384F8F791FA1E97F000EA733 /* CreateGoalVC.swift in Sources */,
 				384F8F771FA1E817000EA733 /* GoalType.swift in Sources */,
 				384F8F731FA1E465000EA733 /* GoalsVC.swift in Sources */,
+				381B653C1FBB804F009A1341 /* Togglable.swift in Sources */,
 				384F8F7E1FA1EACE000EA733 /* UIViewExt.swift in Sources */,
 				384F8F5A1FA1E24A000EA733 /* AppDelegate.swift in Sources */,
-				381D33171FAA47FC00640311 /* UndoStruct.swift in Sources */,
 				384F8F7D1FA1EACE000EA733 /* UIViewControllerExt.swift in Sources */,
 				384F8F7F1FA1EACE000EA733 /* UIButtonExt.swift in Sources */,
+				381B65371FBB798E009A1341 /* UndoTransferDelegate.swift in Sources */,
+				381B65391FBB7FC7009A1341 /* UndoStatus.swift in Sources */,
 				384F8F811FA1EB72000EA733 /* FinishGoalVC.swift in Sources */,
 				384F8F621FA1E24A000EA733 /* GoalPost.xcdatamodeld in Sources */,
 			);
