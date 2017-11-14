@@ -30,7 +30,6 @@ class GoalCell: UITableViewCell {
             lastIndex = goalIndex
         }
         
-        
         if goal.goalProgress == goal.goalCompletionValue {
             self.completionView.isHidden = false
         } else {

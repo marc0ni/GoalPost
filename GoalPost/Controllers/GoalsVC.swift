@@ -9,11 +9,6 @@
 import UIKit
 import CoreData
 
-protocol Undoable {
-    func undo()
-    func redo()
-}
-
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class GoalsVC: UIViewController {
@@ -22,6 +17,7 @@ class GoalsVC: UIViewController {
     @IBOutlet weak var undoStack: UIStackView!
     
     var goals: [Goal] = []
+    var deletedGoalIndex: Int32?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +53,11 @@ class GoalsVC: UIViewController {
     }
     
     @IBAction func undoBtnWasPressed(_ sender: UIButton) {
-        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        managedContext.undoManager?.undo()
+        fetchCoreDataObjects()
+        tableView.reloadData()
+        undoStack.isHidden = true
     }
 }
 
@@ -99,7 +99,12 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
         }
         deleteAction.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         addAction.backgroundColor = #colorLiteral(red: 0.9771530032, green: 0.7062081099, blue: 0.1748393774, alpha: 1)
-        return [deleteAction, addAction]
+        
+        if goals[indexPath.row].goalCompletionValue == goals[indexPath.row].goalProgress {
+            return [deleteAction]
+        } else {
+            return [deleteAction, addAction]
+        }
     }
 }
 
@@ -125,12 +130,13 @@ extension GoalsVC {
     
     func removeGoal(atIndexPath indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        
+        deletedGoalIndex = Int32(indexPath.row)
+        managedContext.undoManager = UndoManager()
         managedContext.delete(goals[indexPath.row])
         
         do {
             try managedContext.save()
-            print("Successfully removed goal!")
+            self.undoStack.isHidden = false
         } catch {
             debugPrint("Could not remove: \(error.localizedDescription)")
         }
@@ -149,20 +155,5 @@ extension GoalsVC {
             debugPrint("Could not fetch: \(error.localizedDescription)")
             completion(false)
         }
-    }
-    
-    func restoreGoal(atIndexPath indexPath: IndexPath) {
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        
-        managedContext.insert(goals[indexPath.row])
-        
-        do {
-            try managedContext.save()
-            print("Successfully restored goal!")
-        } catch {
-            debugPrint("Could not restore: \(error.localizedDescription)")
-        }
-        self.undoBtn.isEnabled = false
-        self.undoStack.isHidden = true
     }
 }
