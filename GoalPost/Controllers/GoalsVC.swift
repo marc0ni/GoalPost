@@ -30,8 +30,6 @@ class GoalsVC: UIViewController {
         undoStack.isHidden = true
     }
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchCoreDataObjects()
