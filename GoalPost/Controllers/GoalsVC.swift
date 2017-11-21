@@ -142,6 +142,18 @@ extension GoalsVC {
         }
     }
     
+    private func deleteGoal() {
+        undoManager?.registerUndo<TargetType>(withTarget target: TargetType, handler: @escaping (TargetType) -> Void) where TargetType : AnyObject
+        undoManager?.setActionName("delete")
+        
+    }
+    
+    private func insertGoal(){
+        undoManager?.registerUndo<TargetType>(withTarget target: TargetType, handler: @escaping (TargetType) -> Void) where TargetType : AnyObject
+        undoManager?.setActionName("insert")
+        
+    }
+    
     func fetch(completion:(_ complete: Bool) -> ()) {
         undoManager?.registerUndo(withTarget: Goal, selector: { (removedObject) in
             guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
