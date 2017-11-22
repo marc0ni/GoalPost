@@ -128,7 +128,7 @@ extension GoalsVC {
         }
     }
     
-    func removeGoal(atIndexPath indexPath: IndexPath) {
+    /*func removeGoal(atIndexPath indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         deletedGoalIndex = Int32(indexPath.row)
         managedContext.undoManager = UndoManager()
@@ -140,35 +140,54 @@ extension GoalsVC {
         } catch {
             debugPrint("Could not remove: \(error.localizedDescription)")
         }
-    }
+    }*/
     
-    private func deleteGoal() {
-        undoManager?.registerUndo<TargetType>(withTarget target: TargetType, handler: @escaping (TargetType) -> Void) where TargetType : AnyObject
+    private func removeGoal(atIndexPath indexPath: IndexPath) {
+        undoManager?.registerUndo(withTarget: self, selector: Selector(("fetch")), object: "indexPath")
         undoManager?.setActionName("delete")
         
-    }
-    
-    private func insertGoal(){
-        undoManager?.registerUndo<TargetType>(withTarget target: TargetType, handler: @escaping (TargetType) -> Void) where TargetType : AnyObject
-        undoManager?.setActionName("insert")
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        managedContext.delete(goals[indexPath.row])
+        
+        do {
+            try managedContext.save()
+            self.undoStack.isHidden = false
+        } catch {
+            debugPrint("Could not remove: \(error.localizedDescription)")
+        }
         
     }
     
+    /*private func insertGoal(atIndexPath indexPath: IndexPath){
+        undoManager?.registerUndo(withTarget: self, selector: Selector(("removeGoal")), object: "indexPath")
+        undoManager?.setActionName("insert")
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        managedContext.insert(goals[indexPath.row])
+        
+        do {
+            try managedContext.save()
+            self.undoStack.isHidden = false
+        } catch {
+            debugPrint("Could not restore: \(error.localizedDescription)")
+        }
+    }*/
+    
     func fetch(completion:(_ complete: Bool) -> ()) {
-        undoManager?.registerUndo(withTarget: Goal, selector: { (removedObject) in
-            guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-            self.removeGoal(atIndexPath: goalIndex)
-            
-            do {
-                goals = try managedContext.fetch(fetchRequest)
-                print("Successfully fetched data.")
-                completion(true)
-            } catch {
-                debugPrint("Could not fetch: \(error.localizedDescription)")
-                let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
-                completion(false)
-            })
-            undoManager?.setActionName("fetch")
+        undoManager?.registerUndo(withTarget: self, selector: Selector(("removeGoal")), object: "indexPath")
+        undoManager?.setActionName("insert")
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        let fetchRequest = NSFetchRequest<Goal>(entityName: "Goal")
+        
+        do {
+            goals = try managedContext.fetch(fetchRequest) 
+            print("Successfully fetched data.")
+            completion(true)
+        } catch {
+            debugPrint("Could not fetch: \(error.localizedDescription)")
+            completion(false)
         }
     }
 }
