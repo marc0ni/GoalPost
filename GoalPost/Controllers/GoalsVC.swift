@@ -132,7 +132,7 @@ extension GoalsVC {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         deletedGoalIndex = Int32(indexPath.row)
         managedContext.undoManager = UndoManager()
-        managedContext.delete(goals[indexPath.row])
+        //managedContext.delete(goals[indexPath.row])
         
         do {
             try managedContext.save()
