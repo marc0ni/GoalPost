@@ -14,20 +14,15 @@ let appDelegate = UIApplication.shared.delegate as? AppDelegate
 class GoalsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var undoBtn: UIButton!
-    @IBOutlet weak var undoStack: UIStackView!
+    @IBOutlet weak var undoView: UIView!
     
     var goals: [Goal] = []
-    var deletedGoalIndex: Int32?
-    var delegate: UndoTransferDelegate? = nil
-    var undoStatus: UndoStatus? = .off
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = false
-        undoStack.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,9 +53,9 @@ class GoalsVC: UIViewController {
     @IBAction func undoBtnWasPressed(_ sender: UIButton) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         managedContext.undoManager?.undo()
+        undoView.isHidden = true
         fetchCoreDataObjects()
         tableView.reloadData()
-        undoStack.isHidden = true
     }
 }
 
@@ -70,7 +65,7 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return goals.count
+        return self.goals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -93,8 +88,6 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
             self.removeGoal(atIndexPath: indexPath)
             self.fetchCoreDataObjects()
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            self.undoStack.isHidden = false
-            self.undoBtn.isEnabled = true
             debugPrint("Debug Print Message from editActionsForRowAt")
 
         }
@@ -104,12 +97,7 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
         }
         deleteAction.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         addAction.backgroundColor = #colorLiteral(red: 0.9771530032, green: 0.7062081099, blue: 0.1748393774, alpha: 1)
-        
-        if goals[indexPath.row].goalCompletionValue == goals[indexPath.row].goalProgress {
-            return [deleteAction]
-        } else {
-            return [deleteAction, addAction]
-        }
+        return [deleteAction, addAction]
     }
 }
 
@@ -135,13 +123,13 @@ extension GoalsVC {
     
     func removeGoal(atIndexPath indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        deletedGoalIndex = Int32(indexPath.row)
         managedContext.undoManager = UndoManager()
         managedContext.delete(goals[indexPath.row])
         
         do {
             try managedContext.save()
-            self.undoStack.isHidden = false
+            undoView.isHidden = false
+            undoBtn.isHidden = false
             debugPrint("Debug Print Message from removeGoal(atIndexPath)")
         } catch {
             debugPrint("Could not remove: \(error.localizedDescription)")
