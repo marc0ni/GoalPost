@@ -23,6 +23,7 @@ class GoalsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = false
+        undoView.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
